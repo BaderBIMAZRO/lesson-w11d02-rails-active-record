@@ -120,3 +120,50 @@ Rails supports six types of associations:
 - has_one :through
 - has_and_belongs_to_many
 
+<details>
+<summary>example of associations</summary>
+  
+consider a simple Rails application that includes a model for authors and a model for books. Each author can have many books. Without associations, the model declarations would look like this:
+  
+```ruby
+
+class Author < ApplicationRecord
+end
+ 
+class Book < ApplicationRecord
+end
+```
+Now, suppose we wanted to add a new book for an existing author. We'd need to do something like this:
+```ruby
+@book = Book.create(published_at: Time.now, author_id: @author.id)
+```
+</br>
+Or consider deleting an author, and ensuring that all of its books get deleted as well:
+```ruby
+@books = Book.where(author_id: @author.id)
+@books.each do |book|
+  book.destroy
+end
+@author.destroy
+```
+With Active Record associations, we can streamline these - and other - operations by declaratively telling Rails that there is a connection between the two models. Here's the revised code for setting up authors and books:
+```ruby
+class Author < ApplicationRecord
+  has_many :books, dependent: :destroy
+end
+ 
+class Book < ApplicationRecord
+  belongs_to :author
+end
+```
+With this change, creating a new book for a particular author is easier:
+```ruby
+@book = @author.books.create(published_at: Time.now)
+```
+Deleting an author and all of its books is much easier:
+```ruby
+@author.destroy
+```
+
+
+</details>
