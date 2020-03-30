@@ -120,6 +120,8 @@ Rails supports six types of associations:
 - has_one :through
 - has_and_belongs_to_many
 
+<br>
+
 <details>
 <summary>has_many & belongs_to example</summary>
   <br>
@@ -175,6 +177,8 @@ Deleting an author and all of its books is much easier:
 
 
 </details>
+
+<br>
 
 <details>
 <summary>has_many :through & belongs_to example</summary>
