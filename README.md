@@ -121,8 +121,7 @@ Rails supports six types of associations:
 - has_and_belongs_to_many
 
 <details>
-<summary>example of associations</summary>
-  
+<summary>has_many & belongs_to example</summary>
 consider a simple Rails application that includes a model for authors and a model for books. Each author can have many books. Without associations, the model declarations would look like this:
   
 ```ruby
@@ -176,3 +175,50 @@ Deleting an author and all of its books is much easier:
 
 
 </details>
+
+<details>
+<summary>has_many :through & belongs_to example</summary>
+  A has_many :through association is often used to set up a many-to-many connection with another model. This association indicates that the declaring model can be matched with zero or more instances of another model by proceeding through a third model. For example, consider a medical practice where patients make appointments to see physicians. The relevant association declarations could look like this:
+  
+```ruby
+class Physician < ApplicationRecord
+  has_many :appointments
+  has_many :patients, through: :appointments
+end
+ 
+class Appointment < ApplicationRecord
+  belongs_to :physician
+  belongs_to :patient
+end
+ 
+class Patient < ApplicationRecord
+  has_many :appointments
+  has_many :physicians, through: :appointments
+end
+```
+
+The corresponding migration might look like this:
+```ruby
+
+class CreateAppointments < ActiveRecord::Migration[5.0]
+  def change
+    create_table :physicians do |t|
+      t.string :name
+      t.timestamps
+    end
+ 
+    create_table :patients do |t|
+      t.string :name
+      t.timestamps
+    end
+ 
+    create_table :appointments do |t|
+      t.belongs_to :physician
+      t.belongs_to :patient
+      t.datetime :appointment_date
+      t.timestamps
+    end
+  end
+end
+```
+  </details>
