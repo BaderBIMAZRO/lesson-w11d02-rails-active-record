@@ -28,8 +28,10 @@ In groups, do a Google search the following topics:
 - SQL (Structured Query Language)
 - Postgresql
 - ORM (Object Relational Mapper)
+- Migrations and Schema
 - Active Record
 - Active Record Associations
+
 
 I'll ask each group to explain one in their own words to the class.
 
